@@ -1,15 +1,15 @@
-package the.flash.protocol.command;
+package the.flash.protocol.request;
 
 import lombok.Data;
-
-import static the.flash.protocol.command.Command.LOGIN_REQUEST;
+import the.flash.protocol.command.Command;
+import the.flash.protocol.Packet;
 
 /**
  * @Author:MH
  * @Date:Created in 15:43 2018/10/17
  */
 @Data
-public class LoginRequestPacket extends Packet{
+public class LoginRequestPacket extends Packet {
 
     private String userId;
 
@@ -19,6 +19,6 @@ public class LoginRequestPacket extends Packet{
 
     @Override
     public Byte getCommand() {
-        return LOGIN_REQUEST;
+        return Command.LOGIN_REQUEST;
     }
 }
