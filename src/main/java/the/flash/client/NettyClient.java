@@ -1,4 +1,4 @@
-package the.flash;
+package the.flash.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -26,8 +26,8 @@ public class NettyClient {
                 .channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-
+                    protected void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new FirstClientHandler());
                     }
                 });
 
