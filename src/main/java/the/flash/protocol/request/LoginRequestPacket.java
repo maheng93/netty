@@ -1,8 +1,10 @@
 package the.flash.protocol.request;
 
 import lombok.Data;
-import the.flash.protocol.command.Command;
+
 import the.flash.protocol.Packet;
+
+import static the.flash.protocol.command.Command.LOGIN_REQUEST;
 
 /**
  * @Author:MH
@@ -19,6 +21,7 @@ public class LoginRequestPacket extends Packet {
 
     @Override
     public Byte getCommand() {
-        return Command.LOGIN_REQUEST;
+
+        return LOGIN_REQUEST;
     }
 }
