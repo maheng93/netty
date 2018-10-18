@@ -1,7 +1,6 @@
 package the.flash.protocol;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import the.flash.protocol.request.LoginRequestPacket;
 import the.flash.protocol.request.MessageRequestPacket;
 import the.flash.protocol.response.LoginResponsePacket;
@@ -40,21 +39,16 @@ public class PackerCodec {
     }
 
 
-    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {
+    public void encode(ByteBuf byteBuf, Packet packet) {
         // 1. 创建 ByteBuf 对象
-        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
-        // 2. 序列化 java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
-        // 3. 实际编码过程
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
         byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlogrithm());
         byteBuf.writeByte(packet.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
-
-        return byteBuf;
     }
 
 
