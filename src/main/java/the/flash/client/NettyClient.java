@@ -14,7 +14,6 @@ import the.flash.codec.PacketDecoder;
 import the.flash.codec.PacketEncoder;
 import the.flash.codec.Spliter;
 import the.flash.protocol.request.MessageRequestPacket;
-import the.flash.util.LoginUtil;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -40,7 +39,7 @@ public class NettyClient {
                 .option(ChannelOption.TCP_NODELAY, true)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) {
+                    public void initChannel(SocketChannel ch) {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
@@ -71,15 +70,10 @@ public class NettyClient {
     private static void startConsoleThread(Channel channel) {
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                if (LoginUtil.hasLogin(channel)) {
                     System.out.println("输入消息发送至服务端: ");
                     Scanner sc = new Scanner(System.in);
                     String line = sc.nextLine();
-
-                    for (int i = 0; i < 1000; i++) {
-                        channel.writeAndFlush(new MessageRequestPacket(line));
-                    }
-                }
+                    channel.writeAndFlush(new MessageRequestPacket(line));
             }
         }).start();
     }
