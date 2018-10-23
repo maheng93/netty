@@ -25,16 +25,14 @@ public class SessionUtil {
 
     public static void unBindSession(Channel channel) {
         if (hasLogin(channel)) {
-            Session session = getSession(channel);
-            userIdChannelMap.remove(session.getUserId());
+            userIdChannelMap.remove(getSession(channel).getUserId());
             channel.attr(Attributes.SESSION).set(null);
-            System.out.println(session + " 退出登录");
         }
     }
 
     public static boolean hasLogin(Channel channel) {
 
-        return getSession(channel) != null;
+        return channel.hasAttr(Attributes.SESSION);
     }
 
     public static Session getSession(Channel channel) {
@@ -47,11 +45,11 @@ public class SessionUtil {
         return userIdChannelMap.get(userId);
     }
 
-    public static void bindChannelGroup(String groupId, ChannelGroup channelGroup){
-        groupIdChannelGroupMap.put(groupId, channelGroup);
+    public static ChannelGroup getChannelGroup(String groupId) {
+        return groupIdChannelGroupMap.get(groupId);
     }
 
-    public static ChannelGroup getChannelGroup(String groupId){
-        return groupIdChannelGroupMap.get(groupId);
+    public static void bindChannelGroup(String groupId, ChannelGroup channelGroup) {
+        groupIdChannelGroupMap.put(groupId, channelGroup);
     }
 }
