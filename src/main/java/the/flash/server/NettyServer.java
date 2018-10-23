@@ -8,6 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import the.flash.codec.PacketCodecHandler;
 import the.flash.codec.Spliter;
+import the.flash.handler.IMIdeStateHandler;
 import the.flash.server.handler.*;
 
 import java.util.Date;
@@ -32,12 +33,14 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch){
+                        ch.pipeline().addLast(new IMIdeStateHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         // 登录请求处理器
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         ch.pipeline().addLast(AuthHandler.INSTANCE);
-                       ch.pipeline().addLast(IMHandler.INSTANCE);
+                        ch.pipeline().addLast(IMHandler.INSTANCE);
                     }
                 });
         bind(serverBootstrap, BEGIN_PORT);
