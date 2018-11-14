@@ -43,6 +43,7 @@ public class NettyServer {
                 }else {
                     System.err.println("端口["+port +"]绑定失败");
                     bind(serverBootstrap, port + 1);
+                    System.out.println("1");
                 }
             }
         });
